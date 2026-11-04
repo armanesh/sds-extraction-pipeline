@@ -10,7 +10,14 @@ Extracts **trade name**, **revision date** and **hazard statements** from Safety
 | assSDS-123006278 | Kroon-Oil Fuel Optimix 2T | 21/07/2026 | H224, H304, H315, H336, H411 | ok |
 | assSDS-128374293 | BISON KIT TRANSPARANT | 20/04/2026 | H225, H319, H336, EUH066 | ok |
 
-All values match the hand-checked answers in [`data/gold.json`](data/gold.json) (rules-only run: 3/3 names, 3/3 dates, 11/11 hazard codes; see [evaluation](runs/20261104-073638_rules/evaluation.md)). LLM run: _pending_.
+All values match the hand-checked answers in [`data/gold.json`](data/gold.json):
+
+| run | trade name | revision date | hazard precision | hazard recall | status |
+|---|---|---|---|---|---|
+| [rules only](runs/20261104-073638_rules/evaluation.md) (Linux) | 3/3 | 3/3 | 11/11 | 11/11 | 3 ok |
+| [rules + qwen2.5:7b](runs/20261104-133153_llm-qwen2.5-7b/evaluation.md) (Windows 11) | 3/3 | 3/3 | 11/11 | 11/11 | 3 ok |
+
+In the LLM run the model agreed with the rules on every trade name and revision date (source `rule+llm` for all six values), so on these samples it confirmed the rules rather than adding anything. Its purpose is labels and layouts the rules do not know. The tests show how its mistakes are handled. Three documents are a correctness check, not an accuracy estimate.
 
 ## Quick start
 
@@ -43,7 +50,7 @@ Evaluate any run: `python evaluate.py runs/<run_id>/results.json`.
 1. Every field matches the hand-checked value for the three samples.
 2. No hazard code from outside section 2.2 (the ingredient list in section 3 also contains H-codes).
 3. No value is accepted silently without a check: LLM values must appear in the source text, and disagreements are flagged.
-4. Runs on any OS without a model or network access (paths via `pathlib`, all files UTF-8; tested on Linux with Python 3.10 and 3.13).
+4. Runs on any OS without a model or network access (paths via `pathlib`, all files UTF-8; tests pass on Linux with Python 3.10 and 3.13 and on Windows 11 with Python 3.13).
 
 ## How it works
 
@@ -102,12 +109,14 @@ Status: `ok`, `needs_review` (a person should check) or `error` (e.g. section 2.
 
 ## LLM run details
 
-_To be completed from the laptop run (`runs/<run_id>/run_info.json`)._
+From [`run_info.json`](runs/20261104-133153_llm-qwen2.5-7b/run_info.json) of the LLM run:
 
 | setting | value |
 |---|---|
-| runtime | Ollama _(version)_ on _(platform)_ |
-| model | _(tag and digest)_ |
+| runtime | Ollama 0.40.14, local, on Windows 11 (laptop CPU, 16 GB RAM), Python 3.13.3 |
+| model | `qwen2.5:7b` (Qwen2.5 7.6B, Q4_K_M quantisation, digest `845dbda0ea48…`) |
+| why this model | open, multilingual (the SDSs are Dutch), reliable JSON output, and runs on a 16 GB laptop without a GPU |
+| run time | ~95 s for the three documents, including loading the model (~15–60 s per document) |
 | temperature / seed | 0 / 0 |
 | context window | `num_ctx` 8192, set explicitly (Ollama's default is smaller and truncates silently) |
 | structured output | JSON schema generated from the Pydantic model `LLMExtraction` |
@@ -143,7 +152,7 @@ Every run writes its own folder `runs/<timestamp>_<mode>/`, so runs never overwr
 
 ## Use of AI assistants
 
-Claude Code was used to discuss the requirements, test PDF libraries, write the code and tests, and draft this README. Verification: the expected values in `data/gold.json` were checked by hand against the PDFs; three PDF libraries were compared on all 9 values; the tests cover the guardrails (invented values rejected, print date flagged); and the pipeline was run from a clean copy with Python 3.10.
+Claude Code was used to discuss the requirements, test PDF libraries, write the code and tests, draft this README, and carry out the Windows LLM run on my laptop from written step-by-step instructions. Verification: the expected values in `data/gold.json` were checked by hand against the PDFs; three PDF libraries were compared on all 9 values; the tests cover the guardrails (invented values rejected, print date flagged); and the pipeline was run from a clean copy with Python 3.10.
 
 ## Time spent
 
