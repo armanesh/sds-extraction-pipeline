@@ -117,19 +117,14 @@ Each run writes `runs/<timestamp>_<mode>/`, so runs never overwrite each other: 
 1. Detect text hidden under drawn shapes and report both values with `needs_review`.
 2. A larger evaluation set (~50 SDSs across suppliers and languages) before any accuracy claim.
 3. Production on GCP: Gemini on Vertex AI as the LLM client, extraction on each new SDS, a human review queue for `needs_review`, and monitoring of the `needs_review` rate as an early signal of new layouts.
-4. CI on Windows, macOS and Linux; page-level evidence per value; labels for more languages once samples exist; OCR for scanned PDFs.
+4. Later, with all SDSs extracted: retrieval (RAG) over free-text sections such as firefighting measures, for questions like "which stored products must not be extinguished with water?".
+5. CI on Windows, macOS and Linux; page-level evidence per value; labels for more languages once samples exist; OCR for scanned PDFs.
 
 ## Use of AI assistants
 
-I worked with Claude Code as a coding assistant so that the coding itself stayed clean and consistent: under my direction it wrote most of the code and tests and drafted this README. I reviewed each step and used it to help with debugging, for example the hazard-code regex bug and a test import-path issue. I stayed involved throughout, since I am responsible for the result.
+I used Claude Code as a coding assistant: under my direction it wrote most of the code and tests and drafted this README, and it helped with debugging. I chose the approach after discussing the alternatives with it, reviewed each step, and am responsible for the result.
 
-The approach came out of a discussion. Some ideas were mine: thinking beyond this task (retrieval over many SDSs, e.g. RAG for questions such as "which stored products react with water?", could be useful later, but we agreed it adds nothing to extracting fields whose location is known), requiring that the pipeline runs on a reviewer's machine without any model, and comparing all three PDF libraries instead of trusting one. Others were Claude's suggestions, and we settled on the design together. The decisions and their reasons are in this README.
-
-Verification:
-- The expected values in `data/gold.json` were checked twice: on page images rendered with Claude Code, which we went through together (this exposed the covered trade names), and separately by me, by eye in the PDFs.
-- Comparing three PDF libraries on all values exposed the regex bug.
-- The tests cover the guardrails (invented values rejected, print date flagged).
-- The pipeline was run from a clean copy with Python 3.10, and the LLM mode on my Windows laptop.
+Verification: the expected values were checked on rendered page images and by eye in the PDFs (this exposed the covered trade names); comparing three PDF libraries exposed a regex bug; the tests cover the guardrails; and the pipeline was run from a clean copy (Python 3.10) and in LLM mode on Windows.
 
 ## Time spent
 
