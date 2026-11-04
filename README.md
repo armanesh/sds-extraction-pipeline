@@ -123,7 +123,7 @@ Each run writes `runs/<timestamp>_<mode>/`, so runs never overwrite each other: 
 
 I worked with Claude Code as a coding assistant so that the coding itself stayed clean and consistent: under my direction it wrote most of the code and tests and drafted this README. I reviewed each step and used it to help with debugging, for example the hazard-code regex bug and a test import-path issue. I stayed involved throughout, since I am responsible for the result.
 
-The approach came out of a discussion. Some ideas were mine, for example questioning whether RAG was needed, requiring that the pipeline runs on a reviewer's machine without any model, and comparing all three PDF libraries instead of trusting one; others were Claude's suggestions; we settled on the design together. The decisions and their reasons are in this README.
+The approach came out of a discussion. Some ideas were mine: thinking beyond this task (retrieval over many SDSs, e.g. RAG for questions such as "which stored products react with water?", could be useful later, but we agreed it adds nothing to extracting fields whose location is known), requiring that the pipeline runs on a reviewer's machine without any model, and comparing all three PDF libraries instead of trusting one. Others were Claude's suggestions, and we settled on the design together. The decisions and their reasons are in this README.
 
 Verification:
 - The expected values in `data/gold.json` were checked twice: on page images rendered with Claude Code, which we went through together (this exposed the covered trade names), and separately by me, by eye in the PDFs.
