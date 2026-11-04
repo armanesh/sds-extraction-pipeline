@@ -156,4 +156,4 @@ Claude Code was used to discuss the requirements, test PDF libraries, write the 
 
 ## Time spent
 
-_Approx. X hours in total._
+Approx. 3 h 48 min in total: reading the brief and the documents, design decisions, implementation (with Claude Code as coding assistant), verification and documentation.
