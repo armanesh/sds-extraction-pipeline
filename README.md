@@ -121,9 +121,9 @@ Each run writes `runs/<timestamp>_<mode>/`, so runs never overwrite each other: 
 
 ## Use of AI assistants
 
-I worked with Claude Code as a coding assistant, to help implement the pipeline and keep the code clean and readable. I stayed involved throughout and reviewed each step, since I am responsible for the result.
+I worked with Claude Code as a coding assistant so that the coding itself stayed clean and consistent: under my direction it wrote most of the code and tests and drafted this README. I reviewed each step and used it to help with debugging, for example the hazard-code regex bug and a test import-path issue. I stayed involved throughout, since I am responsible for the result.
 
-The approach came out of a discussion. Some ideas were mine, for example questioning whether RAG was needed, requiring that the pipeline runs on a reviewer's machine without any model, and comparing all three PDF libraries instead of trusting one; others were Claude's suggestions; we settled on the design together. The decisions and their reasons are in this README. Claude Code wrote most of the code and tests and drafted the README, under my direction and with my review.
+The approach came out of a discussion. Some ideas were mine, for example questioning whether RAG was needed, requiring that the pipeline runs on a reviewer's machine without any model, and comparing all three PDF libraries instead of trusting one; others were Claude's suggestions; we settled on the design together. The decisions and their reasons are in this README.
 
 Verification:
 - The expected values in `data/gold.json` were checked twice: on page images rendered with Claude Code, which we went through together (this exposed the covered trade names), and separately by me, by eye in the PDFs.
