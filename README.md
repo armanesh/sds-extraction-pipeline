@@ -128,9 +128,9 @@ From [`run_info.json`](runs/20261104-133153_llm-qwen2.5-7b/run_info.json) of the
 
 | setting | value |
 |---|---|
-| runtime | Ollama 0.40.14, local, on Windows 11 (laptop CPU, 16 GB RAM), Python 3.13.3 |
+| runtime | Ollama 0.40.14, local, on a Windows 11 laptop (16 GB RAM), Python 3.13.3 |
 | model | `qwen2.5:7b` (Qwen2.5 7.6B, Q4_K_M quantisation, digest `845dbda0ea48…`) |
-| why this model | open, multilingual (the SDSs are Dutch), reliable JSON output, and runs on a 16 GB laptop without a GPU |
+| why this model | open, multilingual (the SDSs are Dutch), reliable JSON output, and runs on an ordinary 16 GB laptop |
 | run time | ~95 s for the three documents, including loading the model (~15–60 s per document) |
 | temperature / seed | 0 / 0 |
 | context window | `num_ctx` 8192, set explicitly (Ollama's default is smaller and truncates silently) |
