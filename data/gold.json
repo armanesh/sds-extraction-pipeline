@@ -1,0 +1,23 @@
+{
+  "note": "Expected values, checked by hand against the PDFs. hazard_statements = every H/EUH code printed in section 2.2, including codes listed under 'Aanvullende gegevens' (supplemental information); see README, 'Assumptions'.",
+  "documents": {
+    "assSDS-120636860": {
+      "trade_name": "Super Silicone Kitchen",
+      "revision_date": "15/07/2026",
+      "hazard_statements": ["EUH208", "EUH210"],
+      "where": "p1 1.1 'Handelsnaam: Super Silicone Kitchen'; p1 header 'herzien op: 15.07.2026'; p1 2.2 'Gevarenaanduidingen Niet van toepassing', EUH208/EUH210 under 'Aanvullende gegevens'"
+    },
+    "assSDS-123006278": {
+      "trade_name": "Kroon-Oil Fuel Optimix 2T",
+      "revision_date": "21/07/2026",
+      "hazard_statements": ["H224", "H304", "H315", "H336", "H411"],
+      "where": "p1 1.1 'Handelsnaam : Kroon-Oil Fuel Optimix 2T'; p1 header 'Datum herziening: 21-7-2026'; p2 2.2 'Gevarenaanduidingen (CLP)'"
+    },
+    "assSDS-128374293": {
+      "trade_name": "BISON KIT TRANSPARANT",
+      "revision_date": "20/04/2026",
+      "hazard_statements": ["H225", "H319", "H336", "EUH066"],
+      "where": "p1 1.1 'Handelsnaam: BISON KIT TRANSPARANT'; p1 header 'herzien op: 20.04.2026' (print date 08.07.2026 is not the revision date); p1-2 2.2 'Gevarenaanduidingen', EUH066 under 'Aanvullende gegevens'"
+    }
+  }
+}
