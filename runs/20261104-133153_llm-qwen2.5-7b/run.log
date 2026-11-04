@@ -1,0 +1,20 @@
+2026-11-04 13:31:57 INFO    run 20261104-133153_llm-qwen2.5-7b: 3 PDF(s) in data\input, mode=llm-qwen2.5-7b
+2026-11-04 13:31:58 DEBUG   [assSDS-120636860] 10 pages, 21667 characters
+2026-11-04 13:31:58 INFO    [assSDS-120636860] trade_name (rule): 'Super Silicone Kitchen' from 'Handelsnaam: Super Silicone Kitchen'
+2026-11-04 13:31:58 INFO    [assSDS-120636860] revision_date (rule): 15/07/2026 from 'herzien op: 15.07.2026'
+2026-11-04 13:31:58 INFO    [assSDS-120636860] hazard_statements (section 2.2): EUH208, EUH210
+2026-11-04 13:32:52 INFO    [assSDS-120636860] LLM proposed: {'trade_name': 'Super Silicone Kitchen', 'revision_date': '15.07.2026'}
+2026-11-04 13:32:52 INFO    [assSDS-120636860] status=ok
+2026-11-04 13:32:54 DEBUG   [assSDS-123006278] 15 pages, 36040 characters
+2026-11-04 13:32:54 INFO    [assSDS-123006278] trade_name (rule): 'Kroon-Oil Fuel Optimix 2T' from 'Handelsnaam : Kroon-Oil Fuel Optimix 2T'
+2026-11-04 13:32:54 INFO    [assSDS-123006278] revision_date (rule): 21/07/2026 from 'Datum herziening: 21-7-2026'
+2026-11-04 13:32:54 INFO    [assSDS-123006278] hazard_statements (section 2.2): H224, H304, H315, H336, H411
+2026-11-04 13:33:11 INFO    [assSDS-123006278] LLM proposed: {'trade_name': 'Kroon-Oil Fuel Optimix 2T', 'revision_date': '21-7-2026'}
+2026-11-04 13:33:11 INFO    [assSDS-123006278] status=ok
+2026-11-04 13:33:12 DEBUG   [assSDS-128374293] 13 pages, 27795 characters
+2026-11-04 13:33:12 INFO    [assSDS-128374293] trade_name (rule): 'BISON KIT TRANSPARANT' from 'Handelsnaam: BISON KIT TRANSPARANT'
+2026-11-04 13:33:12 INFO    [assSDS-128374293] revision_date (rule): 20/04/2026 from 'herzien op: 20.04.2026'
+2026-11-04 13:33:12 INFO    [assSDS-128374293] hazard_statements (section 2.2): H225, H319, H336, EUH066
+2026-11-04 13:33:26 INFO    [assSDS-128374293] LLM proposed: {'trade_name': 'BISON KIT TRANSPARANT', 'revision_date': '20.04.2026'}
+2026-11-04 13:33:26 INFO    [assSDS-128374293] status=ok
+2026-11-04 13:33:30 INFO    done: {'ok': 3, 'needs_review': 0, 'error': 0} -> runs\20261104-133153_llm-qwen2.5-7b
