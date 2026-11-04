@@ -56,8 +56,9 @@ class OllamaClient:
     ) -> None:
         self.model = model
         self.host = host.rstrip("/")
-        # Ollama's default context window is small and silently truncates longer
-        # prompts, so it is set explicitly. Our prompts are ~1-2k tokens.
+        # Set explicitly instead of relying on Ollama's default context size,
+        # which can be smaller and truncates longer prompts without an error.
+        # Our prompts are a few hundred tokens.
         self.options = {"temperature": 0, "seed": 0, "num_ctx": num_ctx}
         self.timeout = timeout
 
