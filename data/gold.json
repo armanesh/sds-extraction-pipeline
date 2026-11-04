@@ -1,5 +1,5 @@
 {
-  "note": "Expected values, checked against images of the rendered PDF pages. trade_name = the commercial name in section 1.1; where the supplier has printed its article description over it, that visible text is recorded as trade_name_as_displayed (see README, 'Findings'). hazard_statements = every H/EUH code printed in section 2.2, including codes listed under 'Aanvullende gegevens' (supplemental information); see README, 'Decisions and assumptions'.",
+  "note": "Expected values, checked against images of the rendered PDF pages and by eye in the PDFs. trade_name = the commercial name in section 1.1; where the supplier has printed its article description over it, that visible text is recorded as trade_name_as_displayed (see README, 'Findings'). hazard_statements = every H/EUH code printed in section 2.2, including codes listed under 'Aanvullende gegevens' (supplemental information); see README, 'Decisions and assumptions'.",
   "documents": {
     "assSDS-120636860": {
       "trade_name": "Super Silicone Kitchen",

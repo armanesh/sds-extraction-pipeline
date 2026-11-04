@@ -121,7 +121,15 @@ Each run writes `runs/<timestamp>_<mode>/`, so runs never overwrite each other: 
 
 ## Use of AI assistants
 
-I used Claude Code as a coding assistant. I set the scope and the criteria (simple, explainable, runnable on any machine without a model, within the time limit), chose between the alternatives above, and made the decisions in this README. Claude Code wrote most of the code and tests and drafted the README, which I reviewed. Verification: comparing three PDF libraries on all values exposed the regex bug; checking the expected values against rendered page images exposed the covered trade names; the tests cover the guardrails (invented values rejected, print date flagged); and the LLM mode was run on my Windows laptop.
+I worked with Claude Code as a coding assistant, to help implement the pipeline and keep the code clean and readable. I stayed involved throughout and reviewed each step, since I am responsible for the result.
+
+The approach came out of a discussion. Some ideas were mine, for example questioning whether RAG was needed, requiring that the pipeline runs on a reviewer's machine without any model, and comparing all three PDF libraries instead of trusting one; others were Claude's suggestions; we settled on the design together. The decisions and their reasons are in this README. Claude Code wrote most of the code and tests and drafted the README, under my direction and with my review.
+
+Verification:
+- The expected values in `data/gold.json` were checked twice: on page images rendered with Claude Code, which we went through together (this exposed the covered trade names), and separately by me, by eye in the PDFs.
+- Comparing three PDF libraries on all values exposed the regex bug.
+- The tests cover the guardrails (invented values rejected, print date flagged).
+- The pipeline was run from a clean copy with Python 3.10, and the LLM mode on my Windows laptop.
 
 ## Time spent
 
