@@ -93,7 +93,7 @@ From [`run_info.json`](runs/20261104-133153_llm-qwen2.5-7b/run_info.json):
 | runtime | Ollama 0.40.14, local, Windows 11 laptop (16 GB RAM), Python 3.13.3 |
 | model | `qwen2.5:7b` (7.6B, Q4_K_M, digest `845dbda0ea48…`): open, multilingual, reliable JSON, runs on an ordinary laptop |
 | temperature / seed | 0 / 0 |
-| context window | `num_ctx` 8192, set explicitly (Ollama's smaller default truncates silently) |
+| context window | `num_ctx` 8192, set explicitly instead of relying on Ollama's default, so a longer prompt is never cut off silently |
 | structured output | JSON schema from the Pydantic model `LLMExtraction` |
 | input | document start to end of section 1.1 (340–580 characters here) |
 | prompt | `v1` in `sds_extractor/llm.py`: copy values exactly as written, exclude UFI and article codes, ignore print and issue dates, return null rather than guess |
