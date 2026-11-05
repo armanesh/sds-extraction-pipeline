@@ -21,11 +21,11 @@ Scored against the checked answers in [`data/gold.json`](data/gold.json); "LLM a
 | documents | run | trade name | revision date | hazard codes (precision, recall) | LLM alone: name, date |
 |---|---|---|---|---|---|
 | 3 assignment SDSs | [rules](runs/20261105-134410_rules_input/evaluation.md) | 3/3 | 3/3 | 11/11, 11/11 | — |
-| | [rules + qwen2.5:7b](runs/20261105-093739_llm-qwen2.5-7b_input/evaluation.md) | 3/3 | 3/3 | 11/11, 11/11 | 3/3, 3/3 |
+| | [rules + qwen2.5:7b](runs/20261105-145845_llm-qwen2.5-7b_input/evaluation.md) | 3/3 | 3/3 | 11/11, 11/11 | 3/3, 3/3 |
 | 2 extra SDSs (German, English) | [rules](runs/20261105-134410_rules_extra/evaluation.md) | 1/2 | 0/2 | 8/8, 8/8 | — |
-| | [rules + qwen2.5:7b](runs/20261105-093854_llm-qwen2.5-7b_extra/evaluation.md) | 2/2 | 1/2 | 8/8, 8/8 | 2/2, 1/2 |
+| | [rules + qwen2.5:7b](runs/20261105-150025_llm-qwen2.5-7b_extra/evaluation.md) | 2/2 | 1/2 | 8/8, 8/8 | 2/2, 1/2 |
 
-The rules runs were repeated after the page-header check and the hazard-code suffix fix were added (Linux, no model). The two LLM runs come from the earlier code version on Windows; their values are unchanged by those fixes, but they were not re-run.
+All four runs use the current code: the rules runs on Linux, the LLM runs on Windows 11.
 
 On the assignment SDSs the LLM only confirms the rules. The two extra public SDSs in [`data/extra`](data/extra/SOURCES.md), not part of the assignment and not used for tuning, show where it matters: on the German one the rules find neither name nor date, and the LLM supplies both correctly. Where neither method finds a value, the record stays empty and `needs_review`. Five documents are a correctness check, not an accuracy estimate.
 
@@ -99,7 +99,7 @@ Sections are found by number, which is the same in every language (REACH 16-sect
 
 ## LLM run details
 
-From [`run_info.json`](runs/20261105-093739_llm-qwen2.5-7b_input/run_info.json):
+From [`run_info.json`](runs/20261105-145845_llm-qwen2.5-7b_input/run_info.json):
 
 | setting | value |
 |---|---|
@@ -110,7 +110,7 @@ From [`run_info.json`](runs/20261105-093739_llm-qwen2.5-7b_input/run_info.json):
 | structured output | JSON schema from the Pydantic model `LLMExtraction` |
 | input | document start to end of section 1.1 (330–580 characters here) |
 | prompt | `v1` in `sds_extractor/llm.py`: copy values exactly, exclude UFI and article codes, ignore print and issue dates, return null rather than guess |
-| speed and scale | rules under 1 s per document, LLM 9–17 s on this laptop; for 10,000 SDSs that is minutes versus about two days, so production would run the LLM in parallel on a hosted model |
+| speed and scale | rules under 1 s per document, LLM 13–20 s per document on this laptop after the model has loaded (~50 s for the first); for 10,000 SDSs that is minutes versus about two days, so production would run the LLM in parallel on a hosted model |
 
 ## Output, logs and run information
 
@@ -141,4 +141,4 @@ Verification: the expected values were checked on rendered page images and by ey
 
 ## Time spent
 
-Approx. 3 h 48 min in total: reading the brief and the documents, design decisions, implementation (with Claude Code as coding assistant), verification and documentation.
+Approx. 3 h 48 min in total: reading the brief and the documents, design decisions, implementation (with Claude Code as coding assistant), verification and documentation, plus about 10 min for a final review before sending.
