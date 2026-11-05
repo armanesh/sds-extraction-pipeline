@@ -131,7 +131,7 @@ Each record has `document_id`, `source_file`, `file_sha256`, `trade_name`, `trad
 
 ## Use of AI assistants
 
-I used Claude Code as a coding assistant: under my direction it wrote most of the code and tests and drafted this README, and it helped with debugging. I chose the approach after discussing the alternatives with it, reviewed each step, and am responsible for the result.
+I used Claude Code as a coding assistant throughout: to compare alternatives, implement and test the pipeline under my direction, debug, and draft this README. I chose the approach, reviewed each step and am responsible for the result.
 
 Verification: the expected values were checked on rendered page images and by eye in the PDFs (this exposed the covered trade names); comparing three PDF libraries exposed a regex bug; the tests cover the guardrails; two public SDSs not used for tuning test other languages and layouts; and CI runs the tests on Linux and Windows.
 
