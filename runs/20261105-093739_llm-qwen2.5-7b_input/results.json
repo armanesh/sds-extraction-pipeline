@@ -1,0 +1,44 @@
+[
+  {
+    "document_id": "assSDS-120636860",
+    "source_file": "assSDS-120636860.pdf",
+    "file_sha256": "16c5d170f7813ba5d8c583e9f5f2131785063142cf00a15981e4ad69c6baae35",
+    "trade_name": "Super Silicone Kitchen",
+    "trade_name_source": "rule+llm",
+    "revision_date": "15/07/2026",
+    "revision_date_source": "rule+llm",
+    "hazard_statements": "EUH208, EUH210",
+    "status": "ok",
+    "warnings": [],
+    "llm_trade_name": "Super Silicone Kitchen",
+    "llm_revision_date": "15/07/2026"
+  },
+  {
+    "document_id": "assSDS-123006278",
+    "source_file": "assSDS-123006278.pdf",
+    "file_sha256": "deadff1ed60d1b2973b7c24b8a37ede375f4682facc5d8372c481fb0c4d84f7e",
+    "trade_name": "Kroon-Oil Fuel Optimix 2T",
+    "trade_name_source": "rule+llm",
+    "revision_date": "21/07/2026",
+    "revision_date_source": "rule+llm",
+    "hazard_statements": "H224, H304, H315, H336, H411",
+    "status": "ok",
+    "warnings": [],
+    "llm_trade_name": "Kroon-Oil Fuel Optimix 2T",
+    "llm_revision_date": "21/07/2026"
+  },
+  {
+    "document_id": "assSDS-128374293",
+    "source_file": "assSDS-128374293.pdf",
+    "file_sha256": "ece185b5a2e6d2826ddeb291aeae95a4e9aa4f620c4a0d88e612c34b68008745",
+    "trade_name": "BISON KIT TRANSPARANT",
+    "trade_name_source": "rule+llm",
+    "revision_date": "20/04/2026",
+    "revision_date_source": "rule+llm",
+    "hazard_statements": "H225, H319, H336, EUH066",
+    "status": "ok",
+    "warnings": [],
+    "llm_trade_name": "BISON KIT TRANSPARANT",
+    "llm_revision_date": "20/04/2026"
+  }
+]

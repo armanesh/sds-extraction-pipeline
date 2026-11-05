@@ -1,0 +1,14 @@
+2026-11-05 09:38:58 INFO    run 20261105-093854_llm-qwen2.5-7b_extra: 2 PDF(s) in data\extra, mode=llm-qwen2.5-7b
+2026-11-05 09:38:59 DEBUG   [de-liquimate-2k-power-kleber] 45 pages, 136365 characters
+2026-11-05 09:38:59 INFO    [de-liquimate-2k-power-kleber] trade_name (rule): no label matched
+2026-11-05 09:38:59 INFO    [de-liquimate-2k-power-kleber] revision_date (rule): no label matched
+2026-11-05 09:38:59 INFO    [de-liquimate-2k-power-kleber] hazard_statements (section 2.2): H225, H314, H335, H317, H412
+2026-11-05 09:39:15 INFO    [de-liquimate-2k-power-kleber] LLM proposed: {'trade_name': 'Liquimate 2K Power Kleber (A)', 'revision_date': '25.10.2023'}
+2026-11-05 09:39:15 INFO    [de-liquimate-2k-power-kleber] status=ok
+2026-11-05 09:39:16 DEBUG   [en-paintman-mdf-sealant] 10 pages, 20274 characters
+2026-11-05 09:39:16 INFO    [en-paintman-mdf-sealant] trade_name (rule): 'MDF Sealant' from 'Trade name: MDF Sealant'
+2026-11-05 09:39:16 INFO    [en-paintman-mdf-sealant] revision_date (rule): no label matched
+2026-11-05 09:39:16 INFO    [en-paintman-mdf-sealant] hazard_statements (section 2.2): H225, H319, H336
+2026-11-05 09:39:25 INFO    [en-paintman-mdf-sealant] LLM proposed: {'trade_name': 'MDF Sealant', 'revision_date': None}
+2026-11-05 09:39:25 INFO    [en-paintman-mdf-sealant] status=needs_review warnings=['revision_date: not found']
+2026-11-05 09:39:29 INFO    done: {'ok': 1, 'needs_review': 1, 'error': 0} -> runs\20261105-093854_llm-qwen2.5-7b_extra
