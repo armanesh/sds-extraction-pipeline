@@ -15,10 +15,19 @@ REVISION_DATE_LABELS = [
     "Date of revision",
 ]
 
-# "H" or "EUH" followed by exactly three digits. The code may be glued to the
-# following word ("H225Licht" in some text extractions), so we only require
-# that no letter/digit precedes it and no digit follows it.
-HAZARD_CODE = re.compile(r"(?<![A-Za-z0-9])(?:EUH|H)\d{3}(?!\d)")
+# "H" or "EUH" followed by exactly three digits, plus the CLP letter suffix that
+# some H-codes carry (H361f, H360FD, H350i). Dropping the suffix would change
+# the meaning (H361f = fertility, H361d = unborn child), so it is kept.
+# The code may be glued to the following word ("H225Licht" in some text
+# extractions), so we only require that no letter/digit precedes it and no digit
+# follows it. A suffix letter directly followed by a lowercase letter is part of
+# a glued word, not a suffix ("H300Fatal" is H300, "H361fWordt" is H361f).
+HAZARD_CODE = re.compile(
+    r"(?<![A-Za-z0-9])(?:EUH\d{3}|H\d{3}(?:[FfDdi]{1,2}(?![a-z]))?)(?!\d)"
+)
+
+# Running header or footer printed on each page: "<article number> - <description>".
+PAGE_IDENTIFIER = re.compile(r"^\s*(\d{4,})\s+-\s+(\S.*?)\s*$", re.MULTILINE)
 
 _DATE_VALUE = r"(\d{1,2}[./-]\d{1,2}[./-]\d{4}|\d{4}-\d{2}-\d{2})"
 
@@ -68,3 +77,19 @@ def normalize_date(raw: str) -> str | None:
 def extract_hazard_codes(section_2_2: str) -> list[str]:
     """All H/EUH codes in section 2.2, de-duplicated, in document order."""
     return list(dict.fromkeys(HAZARD_CODE.findall(section_2_2)))
+
+
+def extract_page_identifier(pages: list[str]) -> str | None:
+    """Description from a "<number> - <description>" line that repeats on the
+    first pages (a running header or footer), or None.
+
+    Some suppliers print their article description here. It can differ from the
+    name in section 1.1, so the pipeline compares the two.
+    """
+    if not pages:
+        return None
+    for match in PAGE_IDENTIFIER.finditer(pages[0]):
+        line = match.group(0).strip()
+        if len(pages) == 1 or any(line in page for page in pages[1:3]):
+            return match.group(2)
+    return None

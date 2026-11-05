@@ -1,0 +1,37 @@
+[
+  {
+    "document_id": "de-liquimate-2k-power-kleber",
+    "source_file": "de-liquimate-2k-power-kleber.pdf",
+    "file_sha256": "c1cf01737deb81dd9b99418861ce55762943340caeda1f20a07e0188b38377e4",
+    "trade_name": null,
+    "trade_name_source": null,
+    "trade_name_as_displayed": null,
+    "revision_date": null,
+    "revision_date_source": null,
+    "hazard_statements": "H225, H314, H335, H317, H412",
+    "status": "needs_review",
+    "warnings": [
+      "trade_name: not found",
+      "revision_date: not found"
+    ],
+    "llm_trade_name": null,
+    "llm_revision_date": null
+  },
+  {
+    "document_id": "en-paintman-mdf-sealant",
+    "source_file": "en-paintman-mdf-sealant.pdf",
+    "file_sha256": "24baa2990a66f541bdc18c6ed25d7ef3ba4791ad88177e1b07cea06e607bee32",
+    "trade_name": "MDF Sealant",
+    "trade_name_source": "rule",
+    "trade_name_as_displayed": null,
+    "revision_date": null,
+    "revision_date_source": null,
+    "hazard_statements": "H225, H319, H336",
+    "status": "needs_review",
+    "warnings": [
+      "revision_date: not found"
+    ],
+    "llm_trade_name": null,
+    "llm_revision_date": null
+  }
+]

@@ -36,7 +36,14 @@ def test_rules_match_gold(doc_id):
     assert record.trade_name == expected["trade_name"]
     assert record.revision_date == expected["revision_date"]
     assert record.hazard_statements == ", ".join(expected["hazard_statements"])
-    assert record.status == "ok"
+    if "trade_name_as_displayed" in expected:
+        # The page shows the article description over the name in the text layer.
+        assert record.trade_name_as_displayed == expected["trade_name_as_displayed"]
+        assert record.status == "needs_review"
+        assert any("page header/footer" in w for w in record.warnings)
+    else:
+        assert record.trade_name_as_displayed is None
+        assert record.status == "ok"
 
 
 def test_llm_agreement_is_recorded():
@@ -46,7 +53,8 @@ def test_llm_agreement_is_recorded():
     )
     assert record.trade_name_source == "rule+llm"
     assert record.revision_date_source == "rule+llm"
-    assert record.status == "ok"
+    # Agreement does not clear the page-vs-text-layer conflict on the trade name.
+    assert record.status == "needs_review"
 
 
 def test_invented_llm_value_is_rejected():

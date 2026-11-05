@@ -26,6 +26,7 @@ from .llm import PROMPT_VERSION, LLMClient, is_grounded
 from .parse import find_section, header_text, read_pdf_pages
 from .rules import (
     extract_hazard_codes,
+    extract_page_identifier,
     extract_revision_date_raw,
     extract_trade_name,
     normalize_date,
@@ -45,6 +46,9 @@ class SDSRecord(BaseModel):
     file_sha256: str
     trade_name: str | None = None
     trade_name_source: Source | None = None
+    # Description printed in the page header/footer when it differs from the
+    # trade name in section 1.1 (the page and the text layer can disagree).
+    trade_name_as_displayed: str | None = None
     revision_date: str | None = Field(default=None, description="dd/mm/yyyy")
     revision_date_source: Source | None = None
     # "" means section 2.2 was found and lists no codes; None means it could not be read.
@@ -182,6 +186,19 @@ def process_document(path: Path, llm: LLMClient | None = None) -> SDSRecord:
 
     record.trade_name, record.trade_name_source, flag_name = reconcile("trade_name", rule_name, llm_name, warnings)
     record.revision_date, record.revision_date_source, flag_date = reconcile("revision_date", rule_date, llm_date, warnings)
+
+    # --- Page header vs section 1.1 ------------------------------------------
+    displayed = extract_page_identifier(pages)
+    if displayed and record.trade_name:
+        a, b = " ".join(displayed.split()).casefold(), " ".join(record.trade_name.split()).casefold()
+        if a not in b and b not in a:
+            record.trade_name_as_displayed = displayed
+            flag_name = True
+            warnings.append(
+                f"trade_name: section 1.1 reads {record.trade_name!r} but the page header/footer shows "
+                f"{displayed!r}; the page may display a different name than the text layer. Confirm which is the master"
+            )
+            log.warning("[%s] trade name differs from page header/footer: %r vs %r", doc, record.trade_name, displayed)
 
     if record.status != "error" and (review or flag_name or flag_date):
         record.status = "needs_review"

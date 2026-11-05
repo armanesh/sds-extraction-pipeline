@@ -1,7 +1,7 @@
 import pytest
 
 from sds_extractor.parse import find_section
-from sds_extractor.rules import extract_hazard_codes, normalize_date
+from sds_extractor.rules import extract_hazard_codes, extract_page_identifier, normalize_date
 
 
 def test_hazard_codes_glued_to_text_are_found():
@@ -13,6 +13,18 @@ def test_hazard_codes_glued_to_text_are_found():
 def test_hazard_codes_ignore_p_codes_and_longer_numbers():
     text = "P210 Verwijderd houden. H2250 x. EUH066 Herhaalde. H300+H310 Fataal. EUH066"
     assert extract_hazard_codes(text) == ["EUH066", "H300", "H310"]
+
+
+def test_hazard_code_letter_suffix_is_kept_but_glued_words_are_not():
+    text = "H361f Wordt. H360FD Kan. H350i Kan. H361fWordt. H300Fatal if swallowed. H226Flammable. H225Licht"
+    assert extract_hazard_codes(text) == ["H361f", "H360FD", "H350i", "H300", "H226", "H225"]
+
+
+def test_page_identifier_needs_to_repeat_on_the_next_pages():
+    line = "6305943 - BIS CONTACT KIT TR BD 100ML*6 NLFR"
+    assert extract_page_identifier([line + "\nx", "y\n" + line]) == "BIS CONTACT KIT TR BD 100ML*6 NLFR"
+    assert extract_page_identifier(["1234 - only once\nx", "y"]) is None
+    assert extract_page_identifier(["no identifier here"]) is None
 
 
 def test_section_2_2_stops_before_component_codes_in_section_3():

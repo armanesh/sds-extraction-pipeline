@@ -10,20 +10,22 @@ Extracts **trade name**, **revision date** and **hazard statements** from Safety
 
 | document | trade name | revision date | hazard statements | status |
 |---|---|---|---|---|
-| assSDS-120636860 | Super Silicone Kitchen ¹ | 15/07/2026 | EUH208, EUH210 | ok |
+| assSDS-120636860 | Super Silicone Kitchen ¹ | 15/07/2026 | EUH208, EUH210 | needs_review ¹ |
 | assSDS-123006278 | Kroon-Oil Fuel Optimix 2T | 21/07/2026 | H224, H304, H315, H336, H411 | ok |
-| assSDS-128374293 | BISON KIT TRANSPARANT ¹ | 20/04/2026 | H225, H319, H336, EUH066 | ok |
+| assSDS-128374293 | BISON KIT TRANSPARANT ¹ | 20/04/2026 | H225, H319, H336, EUH066 | needs_review ¹ |
 
-¹ The page shows the supplier's article description printed over this name; see [Findings](#findings).
+¹ The page shows the supplier's article description printed over this name. The pipeline detects the difference (page header/footer vs section 1.1), keeps the description in `trade_name_as_displayed` and flags the record; see [Findings](#findings).
 
 Scored against the checked answers in [`data/gold.json`](data/gold.json); "LLM alone" is the model's own proposal before guardrails:
 
 | documents | run | trade name | revision date | hazard codes (precision, recall) | LLM alone: name, date |
 |---|---|---|---|---|---|
-| 3 assignment SDSs | [rules](runs/20261105-093733_rules_input/evaluation.md) | 3/3 | 3/3 | 11/11, 11/11 | — |
+| 3 assignment SDSs | [rules](runs/20261105-134410_rules_input/evaluation.md) | 3/3 | 3/3 | 11/11, 11/11 | — |
 | | [rules + qwen2.5:7b](runs/20261105-093739_llm-qwen2.5-7b_input/evaluation.md) | 3/3 | 3/3 | 11/11, 11/11 | 3/3, 3/3 |
-| 2 extra SDSs (German, English) | [rules](runs/20261105-093735_rules_extra/evaluation.md) | 1/2 | 0/2 | 8/8, 8/8 | — |
+| 2 extra SDSs (German, English) | [rules](runs/20261105-134410_rules_extra/evaluation.md) | 1/2 | 0/2 | 8/8, 8/8 | — |
 | | [rules + qwen2.5:7b](runs/20261105-093854_llm-qwen2.5-7b_extra/evaluation.md) | 2/2 | 1/2 | 8/8, 8/8 | 2/2, 1/2 |
+
+The rules runs were repeated after the page-header check and the hazard-code suffix fix were added (Linux, no model). The two LLM runs come from the earlier code version on Windows; their values are unchanged by those fixes, but they were not re-run.
 
 On the assignment SDSs the LLM only confirms the rules. The two extra public SDSs in [`data/extra`](data/extra/SOURCES.md), not part of the assignment and not used for tuning, show where it matters: on the German one the rules find neither name nor date, and the LLM supplies both correctly. Where neither method finds a value, the record stays empty and `needs_review`. Five documents are a correctness check, not an accuracy estimate.
 
@@ -36,7 +38,7 @@ Python 3.10+; the default run needs no network, model or API key.
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
 .venv/bin/python -m sds_extractor        # data/input -> runs/<timestamp>_rules_input/
-.venv/bin/python -m pytest -q            # 20 tests
+.venv/bin/python -m pytest -q            # 22 tests
 ```
 
 ```powershell
@@ -59,7 +61,7 @@ Sections are found by number, which is the same in every language (REACH 16-sect
 
 | field | method | why |
 |---|---|---|
-| hazard statements | regex `H`/`EUH` + 3 digits, **section 2.2 only** | the format is fully specified; an LLM could only invent codes |
+| hazard statements | regex `H`/`EUH` + 3 digits (+ CLP letter suffix such as `f`), **section 2.2 only** | the format is fully specified; an LLM could only invent codes |
 | trade name | label rule + optional LLM | labels vary by supplier and language |
 | revision date | label rule + optional LLM; code formats dd/mm/yyyy | telling revision from print/issue dates needs interpretation, formatting does not |
 
@@ -75,13 +77,13 @@ Sections are found by number, which is the same in every language (REACH 16-sect
 - **Trade name** = the commercial name on the label line in 1.1. The article description printed over it is a product identifier (pack size and codes such as `300ML*12`, also heading every page with the article number), which the brief excludes, as it does the UFI.
 - **Revision date** = only a date with a revision label, read day-first. Print, issue and "replaces version" dates are ignored, never used as a substitute.
 - **Hazard statements** = every H/EUH code in 2.2, including EUH codes under "Aanvullende gegevens" (supplemental), since the brief includes the EUH format. Counting only those under "Gevarenaanduidingen" would give none for assSDS-120636860 and drop EUH066 from assSDS-128374293.
-- **Code format** as in the brief: `H360FD` would be reported as `H360` (none in the samples).
+- **Code format** as in the brief (`H` or `EUH` + three digits), plus the CLP letter suffix when present: `H361f` stays `H361f`, because `H361f` (fertility) and `H361d` (unborn child) mean different things. A letter followed by a lowercase letter is treated as a glued word (`H300Fatal` is `H300`). No sample has a suffixed code in 2.2.
 - **document_id** is the file name, which looks like an asset ID that could link to products.
 - **The extra SDSs were not used for tuning** (e.g. `Revision:` was not added to the date labels), so they stay an unseen check.
 
 ## Findings
 
-- **Page and text layer disagree on two trade names.** A white box covers `Super Silicone Kitchen` / `BISON KIT TRANSPARANT`, with the article description `GRF SILICONE S-200 TR CQ 300ML*12 L001` / `BIS CONTACT KIT TR BD 100ML*6 NLFR` printed on top. Readers see the description; text extraction, and so any LLM, sees the covered name. Found by checking the answers on rendered page images.
+- **Page and text layer disagree on two trade names.** A white box covers `Super Silicone Kitchen` / `BISON KIT TRANSPARANT`, with the article description `GRF SILICONE S-200 TR CQ 300ML*12 L001` / `BIS CONTACT KIT TR BD 100ML*6 NLFR` printed on top. Readers see the description; text extraction, and so any LLM, sees the covered name. Found by checking the answers on rendered page images. The pipeline now flags this: the description also repeats as `<article number> - <description>` in the page header and footer, so a mismatch with section 1.1 sets `trade_name_as_displayed`, adds a warning and sets `needs_review`.
 - Searching the whole document instead of 2.2 gives 12 codes instead of 2 for assSDS-120636860 and adds ingredient codes to the other two.
 - assSDS-128374293 prints `Afdrukdatum: 08.07.2026 herzien op: 20.04.2026`; a test checks that an LLM choosing the print date is flagged.
 - **German extra SDS:** the name sits under "Produktidentifikator" without a label, and the date is "Überarbeitet am" among three other dates. Rules found neither; the LLM found both. The file also holds a second SDS (component B); values come from the first.
@@ -91,7 +93,7 @@ Sections are found by number, which is the same in every language (REACH 16-sect
 ## Known limitations
 
 - Five documents (three Dutch, one German, one English): other languages and layouts are untested.
-- Text hidden under shapes is not detected (the two documents above are `ok`); a PDF with several SDSs is read as one.
+- Text hidden under shapes is detected only indirectly, through a repeated `<number> - <description>` header or footer; a document without one is not checked. A PDF with several SDSs is read as one.
 - The LLM can miss a value that is present; a two-line trade name is cut to its first line.
 - Only numeric dates are recognised; documents without numbered sections, and scanned PDFs, end as `error`.
 
@@ -112,7 +114,7 @@ From [`run_info.json`](runs/20261105-093739_llm-qwen2.5-7b_input/run_info.json):
 
 ## Output, logs and run information
 
-Each record has `document_id`, `source_file`, `file_sha256`, `trade_name`, `trade_name_source`, `revision_date`, `revision_date_source`, `hazard_statements`, `status`, `warnings`, and the LLM's raw proposals `llm_trade_name` and `llm_revision_date`. Each run writes its own `runs/<timestamp>_<mode>_<input folder>/` with `results.json`, `results.csv`, `run.log` (labels matched, codes found, LLM proposals and rejections), `run_info.json` (versions, platform, model, settings) and `evaluation.md`.
+Each record has `document_id`, `source_file`, `file_sha256`, `trade_name`, `trade_name_source`, `trade_name_as_displayed`, `revision_date`, `revision_date_source`, `hazard_statements`, `status`, `warnings`, and the LLM's raw proposals `llm_trade_name` and `llm_revision_date`. Each run writes its own `runs/<timestamp>_<mode>_<input folder>/` with `results.json`, `results.csv`, `run.log` (labels matched, codes found, LLM proposals and rejections), `run_info.json` (versions, platform, model, settings) and `evaluation.md`.
 
 ## Questions for stakeholders
 
@@ -125,7 +127,7 @@ Each record has `document_id`, `source_file`, `file_sha256`, `trade_name`, `trad
 
 ## Next steps
 
-1. Detect text hidden under shapes and report both values with `needs_review`.
+1. Detect text hidden under shapes directly (compare the text layer with the rendered page) instead of relying on the page header.
 2. A labelled set of ~50 SDSs across suppliers and languages; measure, then extend the label lists where it shows gaps (e.g. `Revision:`, German labels).
 3. Split PDFs that contain several SDSs.
 4. Production on GCP: Gemini on Vertex AI, extraction on each new SDS, a review queue for `needs_review`, and monitoring of its rate as a signal of new layouts.
