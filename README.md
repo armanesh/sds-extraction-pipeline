@@ -34,7 +34,7 @@ py -m venv .venv
 .venv\Scripts\python -m pytest -q
 ```
 
-Optional LLM mode with local [Ollama](https://ollama.com): `ollama pull qwen2.5:7b`, then add `--llm` (`--model <tag>` for another model). If Ollama is not available the run logs why and continues with rules only. Score a run with `python evaluate.py runs/<run_id>/results.json`.
+Optional LLM mode with local [Ollama](https://ollama.com): `ollama pull qwen2.5:7b`, then add `--llm` (`--model <tag>` for another model). If Ollama is not available the run logs why and continues with rules only. To process other SDSs, pass their folder: `python -m sds_extractor path/to/pdfs`. Score a run with `python evaluate.py runs/<run_id>/results.json`.
 
 The code only reads the input PDFs and writes a new folder under `runs/`; the only network call is to Ollama on `localhost` in `--llm` mode.
 
@@ -99,7 +99,9 @@ From [`run_info.json`](runs/20261104-133153_llm-qwen2.5-7b/run_info.json):
 | prompt | `v1` in `sds_extractor/llm.py`: copy values exactly as written, exclude UFI and article codes, ignore print and issue dates, return null rather than guess |
 | run time | ~95 s for three documents, including model load |
 
-## Logs and run information
+## Output, logs and run information
+
+Output schema, one record per document: `document_id`, `source_file`, `file_sha256`, `trade_name`, `trade_name_source`, `revision_date` (dd/mm/yyyy), `revision_date_source`, `hazard_statements` (comma-separated), `status`, `warnings`.
 
 Each run writes `runs/<timestamp>_<mode>/`, so runs never overwrite each other: `results.json` / `results.csv` (one record per document with value sources, status and warnings), `run.log` (which label matched, codes found, LLM proposals and rejections), `run_info.json` (versions, platform, model, settings, prompt version) and `evaluation.md`.
 
