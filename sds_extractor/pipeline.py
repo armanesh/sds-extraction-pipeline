@@ -51,6 +51,10 @@ class SDSRecord(BaseModel):
     hazard_statements: str | None = Field(default=None, description="comma-separated H/EUH codes")
     status: Status = "ok"
     warnings: list[str] = Field(default_factory=list)
+    # What the LLM proposed before any check (date normalised when possible),
+    # kept so the LLM can be evaluated on its own. None when no LLM was used.
+    llm_trade_name: str | None = None
+    llm_revision_date: str | None = None
 
 
 def _same(a: str, b: str) -> bool:
@@ -155,6 +159,9 @@ def process_document(path: Path, llm: LLMClient | None = None) -> SDSRecord:
         try:
             proposal = llm.extract(llm_input)
             log.info("[%s] LLM proposed: %s", doc, proposal.model_dump())
+            record.llm_trade_name = proposal.trade_name
+            if proposal.revision_date:
+                record.llm_revision_date = normalize_date(proposal.revision_date) or proposal.revision_date
         except Exception as exc:
             proposal = None
             warnings.append(f"LLM call failed: {exc.__class__.__name__}: {exc}")
@@ -229,7 +236,7 @@ def run(
     mode = "rules"
     if llm is not None:
         mode = "llm-" + re.sub(r"[^A-Za-z0-9.-]+", "-", llm.describe().get("model", "model"))
-    run_id = f"{started.astimezone():%Y%m%d-%H%M%S}_{mode}"
+    run_id = f"{started.astimezone():%Y%m%d-%H%M%S}_{mode}_{input_dir.resolve().name}"
     run_dir = out_root / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
     handlers = _setup_logging(run_dir / "run.log")

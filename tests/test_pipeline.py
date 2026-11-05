@@ -10,7 +10,7 @@ from pathlib import Path
 import pytest
 
 from sds_extractor.llm import LLMExtraction, OllamaClient
-from sds_extractor.pipeline import process_document
+from sds_extractor.pipeline import process_document, reconcile
 
 ROOT = Path(__file__).resolve().parent.parent
 INPUT = ROOT / "data" / "input"
@@ -74,3 +74,19 @@ def test_llm_choosing_the_print_date_is_flagged_for_review():
 def test_unreachable_ollama_is_reported_not_raised():
     reason = OllamaClient("qwen2.5:7b", host="http://127.0.0.1:9").check_available()
     assert reason and "not reachable" in reason
+
+
+def test_llm_proposals_are_kept_for_evaluation():
+    record = process_document(
+        INPUT / "assSDS-123006278.pdf",
+        FakeLLM(trade_name="Kroon-Oil Fuel Optimix 2T", revision_date="21-7-2026"),
+    )
+    assert record.llm_trade_name == "Kroon-Oil Fuel Optimix 2T"
+    assert record.llm_revision_date == "21/07/2026"
+
+
+def test_llm_value_is_used_when_the_rules_find_nothing():
+    # e.g. a label in a language the rules do not know
+    warnings = []
+    value, source, needs_review = reconcile("trade_name", None, "Sekundenkleber", warnings)
+    assert (value, source, needs_review, warnings) == ("Sekundenkleber", "llm", False, [])
