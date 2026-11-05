@@ -1,5 +1,7 @@
 # SDS extraction pipeline
 
+Author: Ali Rahbarimanesh ([@armanesh](https://github.com/armanesh))
+
 Extracts **trade name**, **revision date** and **hazard statements** from Safety Data Sheet (SDS) PDFs into structured data (JSON and CSV) for import into a master data system.
 
 [![tests](https://github.com/armanesh/sds-extraction-pipeline/actions/workflows/tests.yml/badge.svg)](https://github.com/armanesh/sds-extraction-pipeline/actions/workflows/tests.yml)
