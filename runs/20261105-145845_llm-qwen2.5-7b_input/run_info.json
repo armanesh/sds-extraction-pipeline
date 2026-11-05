@@ -1,16 +1,17 @@
 {
-  "run_id": "20261105-093854_llm-qwen2.5-7b_extra",
-  "started_at": "2026-11-05T08:38:54+00:00",
-  "finished_at": "2026-11-05T08:39:25+00:00",
+  "run_id": "20261105-145845_llm-qwen2.5-7b_input",
+  "started_at": "2026-11-05T13:58:45+00:00",
+  "finished_at": "2026-11-05T14:00:17+00:00",
   "mode": "llm-qwen2.5-7b",
-  "input_dir": "data\\extra",
+  "input_dir": "data\\input",
   "documents": [
-    "de-liquimate-2k-power-kleber.pdf",
-    "en-paintman-mdf-sealant.pdf"
+    "assSDS-120636860.pdf",
+    "assSDS-123006278.pdf",
+    "assSDS-128374293.pdf"
   ],
   "status_counts": {
     "ok": 1,
-    "needs_review": 1,
+    "needs_review": 2,
     "error": 0
   },
   "pipeline_version": "0.1.0",
