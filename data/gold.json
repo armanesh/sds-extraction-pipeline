@@ -1,25 +1,61 @@
 {
-  "note": "Expected values, checked against images of the rendered PDF pages and by eye in the PDFs. trade_name = the commercial name in section 1.1; where the supplier has printed its article description over it, that visible text is recorded as trade_name_as_displayed (see README, 'Findings'). hazard_statements = every H/EUH code printed in section 2.2, including codes listed under 'Aanvullende gegevens' (supplemental information); see README, 'Decisions and assumptions'.",
+  "note": "Expected values for the three assignment SDSs and two extra public SDSs (data/extra), checked against images of the rendered PDF pages and by eye in the PDFs. trade_name = the commercial name in section 1.1; where the supplier has printed its article description over it, that visible text is recorded as trade_name_as_displayed (see README, 'Findings'). hazard_statements = every H/EUH code printed in section 2.2, including codes listed under 'Aanvullende gegevens' (supplemental information); see README, 'Decisions and assumptions'.",
   "documents": {
     "assSDS-120636860": {
       "trade_name": "Super Silicone Kitchen",
       "trade_name_as_displayed": "GRF SILICONE S-200 TR CQ 300ML*12 L001",
       "revision_date": "15/07/2026",
-      "hazard_statements": ["EUH208", "EUH210"],
+      "hazard_statements": [
+        "EUH208",
+        "EUH210"
+      ],
       "where": "p1 1.1 'Handelsnaam: Super Silicone Kitchen' in the text layer, covered by a white box with the article description printed on top; p1 header 'herzien op: 15.07.2026'; p1 2.2 'Gevarenaanduidingen Niet van toepassing', EUH208/EUH210 under 'Aanvullende gegevens'"
     },
     "assSDS-123006278": {
       "trade_name": "Kroon-Oil Fuel Optimix 2T",
       "revision_date": "21/07/2026",
-      "hazard_statements": ["H224", "H304", "H315", "H336", "H411"],
+      "hazard_statements": [
+        "H224",
+        "H304",
+        "H315",
+        "H336",
+        "H411"
+      ],
       "where": "p1 1.1 'Handelsnaam : Kroon-Oil Fuel Optimix 2T'; p1 header 'Datum herziening: 21-7-2026'; p2 2.2 'Gevarenaanduidingen (CLP)'"
     },
     "assSDS-128374293": {
       "trade_name": "BISON KIT TRANSPARANT",
       "trade_name_as_displayed": "BIS CONTACT KIT TR BD 100ML*6 NLFR",
       "revision_date": "20/04/2026",
-      "hazard_statements": ["H225", "H319", "H336", "EUH066"],
+      "hazard_statements": [
+        "H225",
+        "H319",
+        "H336",
+        "EUH066"
+      ],
       "where": "p1 1.1 'Handelsnaam: BISON KIT TRANSPARANT' in the text layer, covered by a white box with the article description printed on top; p1 header 'herzien op: 20.04.2026' (print date 08.07.2026 is not the revision date); p1-2 2.2 'Gevarenaanduidingen', EUH066 under 'Aanvullende gegevens'"
+    },
+    "de-liquimate-2k-power-kleber": {
+      "trade_name": "Liquimate 2K Power Kleber (A)",
+      "revision_date": "25/10/2023",
+      "hazard_statements": [
+        "H225",
+        "H314",
+        "H335",
+        "H317",
+        "H412"
+      ],
+      "where": "Extra document (not part of the assignment). p1 1.1 'Produktidentifikator' with the name on the next line (no 'name:' label); p1 header 'Überarbeitet am / Version: 25.10.2023' (not 'Ersetzt Fassung vom 14.08.2023' or 'PDF-Druckdatum 24.07.2025'); p2 2.2. The file also contains a second SDS, for component (B), from about page 26; these values are for component (A), the first SDS."
+    },
+    "en-paintman-mdf-sealant": {
+      "trade_name": "MDF Sealant",
+      "revision_date": "07/07/2025",
+      "hazard_statements": [
+        "H225",
+        "H319",
+        "H336"
+      ],
+      "where": "Extra document (not part of the assignment). p1 1.1 'Trade name: MDF Sealant' (UFI on the next line); p1 header 'Revision: 07.07.2025' (the printing date is the same day); p1-2 2.2 'Hazard statements'."
     }
   }
 }

@@ -14,6 +14,7 @@ from sds_extractor.pipeline import process_document, reconcile
 
 ROOT = Path(__file__).resolve().parent.parent
 INPUT = ROOT / "data" / "input"
+EXTRA = ROOT / "data" / "extra"
 GOLD = json.loads((ROOT / "data" / "gold.json").read_text(encoding="utf-8"))["documents"]
 
 
@@ -28,7 +29,7 @@ class FakeLLM:
         return {"provider": "fake", "model": "fake"}
 
 
-@pytest.mark.parametrize("doc_id", sorted(GOLD))
+@pytest.mark.parametrize("doc_id", sorted(p.stem for p in INPUT.glob("*.pdf")))
 def test_rules_match_gold(doc_id):
     record = process_document(INPUT / f"{doc_id}.pdf")
     expected = GOLD[doc_id]
@@ -90,3 +91,14 @@ def test_llm_value_is_used_when_the_rules_find_nothing():
     warnings = []
     value, source, needs_review = reconcile("trade_name", None, "Sekundenkleber", warnings)
     assert (value, source, needs_review, warnings) == ("Sekundenkleber", "llm", False, [])
+
+
+def test_llm_fills_fields_the_rules_cannot_read_in_a_german_sds():
+    # The German SDS has no "name:" label and dates "Überarbeitet am", so the
+    # rules find neither field; grounded LLM values are used instead.
+    path = EXTRA / "de-liquimate-2k-power-kleber.pdf"
+    rules_only = process_document(path)
+    assert (rules_only.trade_name, rules_only.revision_date, rules_only.status) == (None, None, "needs_review")
+    record = process_document(path, FakeLLM(trade_name="Liquimate 2K Power Kleber (A)", revision_date="25.10.2023"))
+    assert (record.trade_name, record.trade_name_source) == ("Liquimate 2K Power Kleber (A)", "llm")
+    assert (record.revision_date, record.revision_date_source, record.status) == ("25/10/2023", "llm", "ok")
